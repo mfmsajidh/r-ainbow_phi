@@ -1,27 +1,30 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 
 declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const configService = app.get(ConfigService);
+
   const options: SwaggerCustomOptions = {
-    ui: true, //TODO Disable in production
-    raw: ['json'] //TODO Disable in production
+    ui: configService.get<boolean>('swagger.ui'),
+    raw: configService.get<[]>('swagger.raw')
   }
 
   const config = new DocumentBuilder()
-    .setTitle('R-ainbow Phi')
-    .setDescription('R-ainbow Phi API Documentation')
-    .setVersion('1.0')
+    .setTitle(configService.get<string>('swagger.title') as string)
+    .setDescription(configService.get<string>('swagger.description') as string)
+    .setVersion(configService.get<string>('swagger.version') as string)
     .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory, options);
+  SwaggerModule.setup(configService.get<string>('swagger.url') as string, app, documentFactory, options);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(configService.get('application.port') as number);
   console.log(`Application is running on: ${await app.getUrl()}`);
 
   if (module.hot) {

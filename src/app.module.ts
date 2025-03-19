@@ -3,11 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomersModule } from './customers/customers.module';
 import { ConfigModule } from '@nestjs/config';
 import databaseConfig from '../config/database.config';
+import swaggerConfig from '../config/swagger.config';
+import applicationConfig from '../config/application.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.testing', '.env.staging', '.env.production', '.env'],
+      load: [applicationConfig, swaggerConfig],
       isGlobal: true,
       cache: true,
     }),
