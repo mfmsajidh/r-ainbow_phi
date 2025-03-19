@@ -4,9 +4,9 @@ import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 
 const createCustomerDto: CreateCustomerDto = {
-  firstName: "firstName #1",
-  lastName: "lastName #1",
-}
+  firstName: 'firstName #1',
+  lastName: 'lastName #1',
+};
 
 describe('CustomersController', () => {
   let customersController: CustomersController;
@@ -20,7 +20,11 @@ describe('CustomersController', () => {
         {
           provide: CustomersService,
           useValue: {
-            create: jest.fn().mockImplementation((customer: CreateCustomerDto) => Promise.resolve({ id: '1', ...customer })),
+            create: jest
+              .fn()
+              .mockImplementation((customer: CreateCustomerDto) =>
+                Promise.resolve({ id: '1', ...customer }),
+              ),
             findAll: jest.fn().mockResolvedValue([
               {
                 firstName: 'firstName #1',
@@ -29,16 +33,18 @@ describe('CustomersController', () => {
               {
                 firstName: 'firstName #2',
                 lastName: 'lastName #2',
-              }
+              },
             ]),
-            findOne: jest.fn().mockImplementation((id: string) => Promise.resolve({
-              firstName: 'firstName #1',
-              lastName: 'lastName #1',
-              id,
-            })),
+            findOne: jest.fn().mockImplementation((id: string) =>
+              Promise.resolve({
+                firstName: 'firstName #1',
+                lastName: 'lastName #1',
+                id,
+              }),
+            ),
             remove: jest.fn(),
-          }
-        }
+          },
+        },
       ],
     }).compile();
 

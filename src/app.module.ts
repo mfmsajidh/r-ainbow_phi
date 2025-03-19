@@ -1,20 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomersModule } from './customers/customers.module';
+import { ConfigModule } from '@nestjs/config';
+import databaseConfig from '../config/database.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'r-ainbow_phi',
-      synchronize: true, //TODO Comment in production
-      logging: true, //TODO Comment in production
-      autoLoadEntities: true,
+    ConfigModule.forRoot({
+      envFilePath: ['.env.development', '.env.testing', '.env.staging', '.env.production', '.env'],
+      isGlobal: true,
+      cache: true,
     }),
+    TypeOrmModule.forRootAsync(databaseConfig.asProvider()),
     CustomersModule,
   ],
 })

@@ -10,8 +10,7 @@ export class CustomersService {
   constructor(
     @InjectRepository(Customer)
     private customersRepository: Repository<Customer>,
-  ) {
-  }
+  ) {}
 
   create(createCustomerDto: CreateCustomerDto): Promise<Customer> {
     const customer = new Customer();
@@ -29,7 +28,10 @@ export class CustomersService {
     return this.customersRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateCustomerDto: UpdateCustomerDto): Promise<UpdateResult> {
+  async update(
+    id: number,
+    updateCustomerDto: UpdateCustomerDto,
+  ): Promise<UpdateResult> {
     return this.customersRepository.update(id, updateCustomerDto);
   }
 
