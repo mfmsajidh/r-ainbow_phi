@@ -9,7 +9,7 @@ import applicationConfig from '../config/application.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env.development', '.env.testing', '.env.staging', '.env.production', '.env'],
+      envFilePath: ['.env.development.local', '.env.test.local', '.env.production.local', '.env.local', '.env'],
       load: [applicationConfig, swaggerConfig],
       isGlobal: true,
       cache: true,
