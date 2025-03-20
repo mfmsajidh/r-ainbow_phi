@@ -12,6 +12,7 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Customer } from './entities/customer.entity';
 import { UpdateResult } from 'typeorm';
+import { CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('customers')
 export class CustomersController {
@@ -28,6 +29,7 @@ export class CustomersController {
   }
 
   @Get()
+  @CacheTTL(30000) // 30 seconds
   findAll(): Promise<Customer[]> {
     return this.customersService.findAll();
   }
