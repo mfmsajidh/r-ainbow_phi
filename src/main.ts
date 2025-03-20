@@ -1,13 +1,19 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 
 declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const globalPrefix = 'v1';
+  app.setGlobalPrefix(globalPrefix);
+  app.enableVersioning({
+    type: VersioningType.URI,
+  })
 
   const configService = app.get(ConfigService);
 
@@ -30,7 +36,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(configService.get<string>('swagger.url') as string, app, documentFactory, options);
+  SwaggerModule.setup(`${globalPrefix}/${configService.get<string>('swagger.url') as string}`, app, documentFactory, options);
 
   await app.listen(configService.get('application.port') as number);
   console.log(`Application is running on: ${await app.getUrl()}`);
