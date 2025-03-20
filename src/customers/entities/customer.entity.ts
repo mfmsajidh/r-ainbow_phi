@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Customer {
@@ -13,4 +14,12 @@ export class Customer {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Exclude()
+  @Column()
+  password: string;
+
+  constructor(partial: Partial<Customer> = {}) {
+    Object.assign(this, partial);
+  }
 }

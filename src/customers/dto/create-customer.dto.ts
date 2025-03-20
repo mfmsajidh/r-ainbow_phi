@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsStrongPassword } from 'class-validator';
 
 export class CreateCustomerDto {
   /**
@@ -16,4 +16,13 @@ export class CreateCustomerDto {
    */
   @IsNotEmpty()
   lastName: string;
+
+  /**
+   * Customer's password
+   *
+   * @example string2A!
+   */
+  @IsNotEmpty()
+  @IsStrongPassword()
+  password: string;
 }

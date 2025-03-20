@@ -16,6 +16,7 @@ export class CustomersService {
     const customer = new Customer();
     customer.firstName = createCustomerDto.firstName;
     customer.lastName = createCustomerDto.lastName;
+    customer.password = createCustomerDto.password;
 
     return this.customersRepository.save(customer);
   }
