@@ -18,6 +18,7 @@ import * as Joi from 'joi';
           .valid('development', 'production', 'test', 'provision')
           .default('development'),
         PORT: Joi.number().port().default(3000),
+        VALIDATION_ERROR: Joi.boolean().default(false),
 
         // Database
         DATABASE_TYPE: Joi.string().valid('postgres', 'mysql').required(),
@@ -37,10 +38,6 @@ import * as Joi from 'joi';
         SWAGGER_VERSION: Joi.string().default('1.0.0'),
         SWAGGER_URL: Joi.string().default('api'),
       }),
-      validationOptions: {
-        allowUnknown: false,
-        abortEarly: false,
-      },
       isGlobal: true,
       cache: true,
     }),

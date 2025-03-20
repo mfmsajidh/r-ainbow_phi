@@ -1,9 +1,12 @@
+import { IsNotEmpty } from 'class-validator';
+
 export class CreateCustomerDto {
   /**
    * Customer's first name
    *
    * @example Harry
    */
+  @IsNotEmpty()
   firstName: string;
 
   /**
@@ -11,5 +14,6 @@ export class CreateCustomerDto {
    *
    * @example Potter
    */
+  @IsNotEmpty()
   lastName: string;
 }
