@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/sw
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ConsoleLogger, Logger, LogLevel, ValidationPipe, VersioningType } from '@nestjs/common';
+import * as compression from 'compression';
 
 declare const module: any;
 
@@ -10,6 +11,9 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   const app = await NestFactory.create(AppModule);
+
+  //TODO Offload compression from the application server and give to NGINX
+  app.use(compression());
 
   const configService = app.get(ConfigService);
 
