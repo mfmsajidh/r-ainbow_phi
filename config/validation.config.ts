@@ -28,4 +28,8 @@ export default Joi.object({
   SWAGGER_VERSION: Joi.string().default('1.0.0'),
   SWAGGER_URL: Joi.string().default('api'),
 
+  // Bull
+  BULL_HOST: Joi.string().required(),
+  BULL_PORT: Joi.number().required(),
+
 });

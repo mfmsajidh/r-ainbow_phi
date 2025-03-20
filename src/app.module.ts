@@ -9,6 +9,8 @@ import validationSchema from '../config/validation.config';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
+import { BullModule } from '@nestjs/bullmq';
+import bullConfig from '../config/bull.config';
 
 const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production.local', '.env.local', '.env'];
 
@@ -17,7 +19,7 @@ const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       envFilePath: ENV_PATHS,
-      load: [applicationConfig, swaggerConfig],
+      load: [applicationConfig, swaggerConfig, bullConfig],
       validationSchema,
       isGlobal: true,
       cache: true,
@@ -30,6 +32,16 @@ const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production
         max: configService.get<number>('application.cacheSize'),
       }),
       isGlobal: true,
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        connection: {
+          host: configService.get<string>('bull.host'),
+          port: configService.get<number>('bull.port'),
+        },
+      }),
+      inject: [ConfigService],
     }),
 
     TypeOrmModule.forRootAsync(databaseConfig.asProvider()),
