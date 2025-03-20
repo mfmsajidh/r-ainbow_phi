@@ -2,20 +2,31 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { ConsoleLogger, Logger, LogLevel, ValidationPipe, VersioningType } from '@nestjs/common';
 
 declare const module: any;
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
+
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+
+  const logLevels = configService.get<LogLevel[]>('application.logLevels') || ['log', 'warn', 'error'];
+
+  app.useLogger(
+    new ConsoleLogger({
+      prefix: configService.get<string>('swagger.title') as string,
+      logLevels,
+    }),
+  );
 
   const globalPrefix = 'v1';
   app.setGlobalPrefix(globalPrefix);
   app.enableVersioning({
     type: VersioningType.URI,
-  })
-
-  const configService = app.get(ConfigService);
+  });
 
   app.useGlobalPipes(new ValidationPipe({
     disableErrorMessages: !configService.get<boolean>('application.validationError'),
@@ -26,8 +37,8 @@ async function bootstrap() {
 
   const options: SwaggerCustomOptions = {
     ui: configService.get<boolean>('swagger.ui'),
-    raw: configService.get<[]>('swagger.raw')
-  }
+    raw: configService.get<[]>('swagger.raw'),
+  };
 
   const config = new DocumentBuilder()
     .setTitle(configService.get<string>('swagger.title') as string)
@@ -35,11 +46,13 @@ async function bootstrap() {
     .setVersion(configService.get<string>('swagger.version') as string)
     .addBearerAuth()
     .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${globalPrefix}/${configService.get<string>('swagger.url') as string}`, app, documentFactory, options);
 
-  await app.listen(configService.get('application.port') as number);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  await app.listen(configService.get<number>('application.port') as number);
+
+  logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
 
   if (module.hot) {
     module.hot.accept();

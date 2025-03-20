@@ -9,6 +9,7 @@ export default Joi.object({
   VALIDATION_ERROR: Joi.boolean().default(false),
   CACHE_TTL: Joi.number().default(300000), // 5 min
   CACHE_MAX: Joi.number().default(100),
+  LOG_LEVELS: Joi.string().default('log,warn,error'),
 
   // Database
   DATABASE_TYPE: Joi.string().valid('postgres', 'mysql').required(),
