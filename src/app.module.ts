@@ -10,7 +10,6 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bullmq';
-import { BorthdayModule } from './modules/borthday/borthday.module';
 import bullConfig from './config/bull.config';
 
 const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production.local', '.env.local', '.env'];
@@ -48,8 +47,6 @@ const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production
     TypeOrmModule.forRootAsync(databaseConfig.asProvider()),
 
     CustomersModule,
-
-    BorthdayModule,
   ],
   providers: [
     {
