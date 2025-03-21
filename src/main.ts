@@ -57,6 +57,8 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${globalPrefix}/${configService.get<string>('swagger.url') as string}`, app, documentFactory, options);
 
+  app.enableCors();
+
   await app.listen(configService.get<number>('application.port') as number);
 
   logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
