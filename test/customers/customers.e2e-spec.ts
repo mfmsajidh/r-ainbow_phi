@@ -2,8 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
-import { CustomersModule } from '../../src/customers/customers.module';
-import { CreateCustomerDto } from '../../src/customers/dto/create-customer.dto';
+import { CustomersModule } from '../../src/modules/customers/customers.module';
+import { CreateCustomerDto } from '../../src/modules/customers/dto/create-customer.dto';
 
 describe('Customers - /customers (e2e)', () => {
   const customers = {
@@ -11,6 +11,7 @@ describe('Customers - /customers (e2e)', () => {
     firstName: 'FirstName #1',
     lastName: 'LastName #1',
     isActive: true,
+    password: 'string2A!',
   };
 
   let app: INestApplication;
@@ -36,7 +37,7 @@ describe('Customers - /customers (e2e)', () => {
     await app.init();
   });
 
-  it('Create [POST /customers]', () => {
+  it('Create [POST /customers]', async () => {
     return request(app.getHttpServer())
       .post('/customers')
       .send(customers as CreateCustomerDto)
@@ -46,7 +47,7 @@ describe('Customers - /customers (e2e)', () => {
       });
   });
 
-  it('Get all customers [GET /customers]', () => {
+  it('Get all customers [GET /customers]', async () => {
     return request(app.getHttpServer())
       .get('/customers')
       .expect(200)
@@ -55,7 +56,7 @@ describe('Customers - /customers (e2e)', () => {
       });
   });
 
-  it('Get one customer [GET /customers/:id]', () => {
+  it('Get one customer [GET /customers/:id]', async () => {
     return request(app.getHttpServer())
       .get('/customers/2')
       .expect(200)

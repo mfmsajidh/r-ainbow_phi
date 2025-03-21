@@ -1,16 +1,17 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomersModule } from './customers/customers.module';
+import { CustomersModule } from './modules/customers/customers.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import databaseConfig from '../config/database.config';
-import swaggerConfig from '../config/swagger.config';
-import applicationConfig from '../config/application.config';
-import validationSchema from '../config/validation.config';
+import databaseConfig from './config/database.config';
+import swaggerConfig from './config/swagger.config';
+import applicationConfig from './config/application.config';
+import validationSchema from './config/validation.config';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bullmq';
-import bullConfig from '../config/bull.config';
+import { BorthdayModule } from './modules/borthday/borthday.module';
+import bullConfig from './config/bull.config';
 
 const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production.local', '.env.local', '.env'];
 
@@ -27,7 +28,7 @@ const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production
     CacheModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService) => ({
         ttl: configService.get<number>('application.cacheTtl'),
         max: configService.get<number>('application.cacheSize'),
       }),
@@ -47,6 +48,8 @@ const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production
     TypeOrmModule.forRootAsync(databaseConfig.asProvider()),
 
     CustomersModule,
+
+    BorthdayModule,
   ],
   providers: [
     {
