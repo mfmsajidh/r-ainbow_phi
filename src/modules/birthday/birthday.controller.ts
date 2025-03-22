@@ -5,11 +5,8 @@ import {
   Logger,
   Param,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { BirthdayService } from './birthday.service';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UseDiscountDto } from './dto/use-discount.dto';
 
 @Controller('birthday-campaign')
@@ -19,15 +16,14 @@ export class BirthdayController {
   constructor(private readonly birthdayService: BirthdayService) {}
 
   /**
-   * Get active birthday campaign for the authenticated user
+   * Get active birthday campaign for the user
    * Used by the mobile app to display birthday offers
    */
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async getActiveCampaign(@CurrentUser() user: any) {
+  @Get(':id')
+  async getActiveCampaign(@Param('id') id: string) {
     try {
       const result = await this.birthdayService.getActiveCampaignForCustomer(
-        user.id,
+        id,
       );
 
       if (!result) {
@@ -55,7 +51,7 @@ export class BirthdayController {
       };
     } catch (error) {
       this.logger.error(
-        `Error fetching birthday campaign for user ${user.id}: ${error.message}`,
+        `Error fetching birthday campaign for user ${id}: ${error.message}`,
         error.stack,
       );
       throw error;
