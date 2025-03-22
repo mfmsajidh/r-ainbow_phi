@@ -10,7 +10,7 @@ export class CrmService {
   /**
    * Get customers with birthdays in the next 7 days
    */
-  async getCustomersWithBirthdaysInNextWeek(): Promise<any[]> {
+  getCustomersWithBirthdaysInNextWeek(): any[] {
     /**
      * TODO Call an API or query a database to fetch customers
      * Returns mock data for demonstration purposes

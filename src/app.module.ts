@@ -11,6 +11,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bullmq';
 import bullConfig from './config/bull.config';
+import { BirthdayModule } from './modules/birthday/birthday.module';
 
 const ENV_PATHS = [
   '.env.development.local',
@@ -33,7 +34,7 @@ const ENV_PATHS = [
     CacheModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         ttl: configService.get<number>('application.cacheTtl'),
         max: configService.get<number>('application.cacheSize'),
       }),
@@ -41,7 +42,7 @@ const ENV_PATHS = [
     }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         connection: {
           host: configService.get<string>('bull.host'),
           port: configService.get<number>('bull.port'),
@@ -53,6 +54,7 @@ const ENV_PATHS = [
     TypeOrmModule.forRootAsync(databaseConfig.asProvider()),
 
     CustomersModule,
+    BirthdayModule,
   ],
   providers: [
     {
