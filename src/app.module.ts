@@ -12,7 +12,13 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bullmq';
 import bullConfig from './config/bull.config';
 
-const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production.local', '.env.local', '.env'];
+const ENV_PATHS = [
+  '.env.development.local',
+  '.env.test.local',
+  '.env.production.local',
+  '.env.local',
+  '.env',
+];
 
 @Module({
   imports: [
@@ -56,7 +62,7 @@ const ENV_PATHS = ['.env.development.local', '.env.test.local', '.env.production
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
-    }
+    },
   ],
 })
 export class AppModule {}

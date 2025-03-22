@@ -32,5 +32,4 @@ export default Joi.object({
   // Bull
   BULL_HOST: Joi.string().required(),
   BULL_PORT: Joi.number().required(),
-
 });

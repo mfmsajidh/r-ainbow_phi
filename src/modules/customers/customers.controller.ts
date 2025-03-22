@@ -35,7 +35,7 @@ export class CustomersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Customer | null> {
+  findOne(@Param('id') id: string): Promise<Customer | null> {
     return this.customersService.findOne(id);
   }
 

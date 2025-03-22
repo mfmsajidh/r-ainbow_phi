@@ -1,8 +1,18 @@
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerCustomOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ConsoleLogger, Logger, LogLevel, ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  Logger,
+  LogLevel,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import * as compression from 'compression';
 import helmet from 'helmet';
 
@@ -20,7 +30,11 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  const logLevels = configService.get<LogLevel[]>('application.logLevels') || ['log', 'warn', 'error'];
+  const logLevels = configService.get<LogLevel[]>('application.logLevels') || [
+    'log',
+    'warn',
+    'error',
+  ];
 
   app.useLogger(
     new ConsoleLogger({
@@ -35,12 +49,16 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  app.useGlobalPipes(new ValidationPipe({
-    disableErrorMessages: !configService.get<boolean>('application.validationError'),
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      disableErrorMessages: !configService.get<boolean>(
+        'application.validationError',
+      ),
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   const options: SwaggerCustomOptions = {
     ui: configService.get<boolean>('swagger.ui'),
@@ -55,7 +73,12 @@ async function bootstrap() {
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(`${globalPrefix}/${configService.get<string>('swagger.url') as string}`, app, documentFactory, options);
+  SwaggerModule.setup(
+    `${globalPrefix}/${configService.get<string>('swagger.url') as string}`,
+    app,
+    documentFactory,
+    options,
+  );
 
   app.enableCors();
 

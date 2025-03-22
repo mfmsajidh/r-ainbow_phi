@@ -7,5 +7,7 @@ export default registerAs('application', () => ({
   validationError: process.env.VALIDATION_ERROR === 'true',
   cacheTtl: parseInt(process.env.CACHE_TTL ?? '300000', 10), // Defaults to 5 minutes
   cacheSize: parseInt(process.env.CACHE_MAX ?? '100', 10),
-  logLevels: process.env.LOG_LEVELS ? process.env.LOG_LEVELS.split(',') as LogLevel[] : ['log', 'warn', 'error'],
+  logLevels: process.env.LOG_LEVELS
+    ? (process.env.LOG_LEVELS.split(',') as LogLevel[])
+    : ['log', 'warn', 'error'],
 }));

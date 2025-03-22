@@ -6,6 +6,7 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 const createCustomerDto: CreateCustomerDto = {
   firstName: 'firstName #1',
   lastName: 'lastName #1',
+  password: 'string2A!',
 };
 
 describe('CustomersController', () => {
@@ -76,7 +77,7 @@ describe('CustomersController', () => {
 
   describe('findOne()', () => {
     it('should find a customer', () => {
-      expect(customersController.findOne(1)).resolves.toEqual({
+      expect(customersController.findOne('1')).resolves.toEqual({
         firstName: 'firstName #1',
         lastName: 'lastName #1',
         id: 1,
