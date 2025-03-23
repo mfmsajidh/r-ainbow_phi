@@ -23,7 +23,10 @@ export class CampaignService {
     }
 
     const today = new Date();
-    const birthdayThisYear = setYear(new Date(customer.birthday), today.getFullYear());
+    const birthdayThisYear = setYear(
+      new Date(customer.birthday),
+      today.getFullYear(),
+    );
     const diff = differenceInCalendarDays(birthdayThisYear, today);
 
     if (diff >= 0 && diff <= 7) {
@@ -41,7 +44,10 @@ export class CampaignService {
     const today = new Date();
 
     for (const user of users) {
-      const birthdayThisYear = setYear(new Date(user.birthday), today.getFullYear());
+      const birthdayThisYear = setYear(
+        new Date(user.birthday),
+        today.getFullYear(),
+      );
 
       const diff = differenceInCalendarDays(birthdayThisYear, today);
 

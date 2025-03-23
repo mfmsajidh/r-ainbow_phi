@@ -7,10 +7,7 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiResponse,
-} from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Customer } from './entities/customer.entity';
@@ -29,11 +26,6 @@ export class CustomersController {
    */
   @Get('me')
   @CacheTTL(30000) // Cache response for 30 seconds
-  @ApiResponse({
-    status: 200,
-    description: 'The customer details',
-    type: Customer,
-  })
   getProfile(@Request() req): Promise<Customer | null> {
     return this.customersService.findOne(req.user.email);
   }
@@ -42,11 +34,6 @@ export class CustomersController {
    * Update the currently authenticated customer's details.
    */
   @Patch('me')
-  @ApiResponse({
-    status: 200,
-    description: 'The result of the update operation',
-    type: UpdateResult,
-  })
   updateProfile(
     @Request() req,
     @Body() updateCustomerDto: UpdateCustomerDto,
@@ -58,7 +45,6 @@ export class CustomersController {
    * Delete the currently authenticated customer's account.
    */
   @Delete('me')
-  @ApiResponse({ status: 200, description: 'Customer account deleted' })
   removeProfile(@Request() req): Promise<void> {
     return this.customersService.remove(req.user.id);
   }

@@ -1,9 +1,4 @@
-import {
-  Controller,
-  Get,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { CampaignService } from './campaign.service';
@@ -12,9 +7,7 @@ import { CampaignService } from './campaign.service';
 @UseGuards(JwtAuthGuard)
 @Controller('campaign')
 export class CampaignController {
-  constructor(
-    private readonly campaignService: CampaignService,
-  ) {}
+  constructor(private readonly campaignService: CampaignService) {}
 
   /**
    * Get personalised birthday campaign content

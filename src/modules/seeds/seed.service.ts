@@ -42,7 +42,9 @@ export class SeedService implements OnModuleInit {
         ),
       });
     }
-    this.logger.log(`👥 Created ${count} customers with birthdays exactly 7 days from today.`);
+    this.logger.log(
+      `👥 Created ${count} customers with birthdays exactly 7 days from today.`,
+    );
   }
 
   private async seedProducts(count: number) {

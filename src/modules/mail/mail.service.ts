@@ -23,7 +23,10 @@ export class MailService {
     discountCode: string,
     products: any[],
   ) {
-    const source = fs.readFileSync('./src/modules/mail/templates/birthday.hbs', 'utf8');
+    const source = fs.readFileSync(
+      './src/modules/mail/templates/birthday.hbs',
+      'utf8',
+    );
     const template = handlebars.compile(source);
     const html = template({ discountCode, products });
 

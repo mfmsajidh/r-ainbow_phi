@@ -7,12 +7,7 @@ import { BirthdayScheduler } from './birthday.scheduler';
 import { QueueModule } from '../../common/modules/queue.module';
 
 @Module({
-  imports: [
-    ScheduleModule.forRoot(),
-    QueueModule,
-    CampaignModule,
-    MailModule,
-  ],
+  imports: [ScheduleModule.forRoot(), QueueModule, CampaignModule, MailModule],
   providers: [JobsProcessor, BirthdayScheduler],
 })
 export class JobsModule {}

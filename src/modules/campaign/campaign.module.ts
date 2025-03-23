@@ -6,11 +6,7 @@ import { CampaignController } from './campaign.controller';
 import { QueueModule } from '../../common/modules/queue.module';
 
 @Module({
-  imports: [
-    CustomersModule,
-    ProductsModule,
-    QueueModule,
-  ],
+  imports: [CustomersModule, ProductsModule, QueueModule],
   controllers: [CampaignController],
   providers: [CampaignService],
   exports: [CampaignService],

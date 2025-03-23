@@ -45,7 +45,7 @@ export class CreateCustomerDto {
   /**
    * Customer's password
    *
-   * @example string2A!
+   * @example Password123!
    */
   @IsNotEmpty()
   @IsStrongPassword()
