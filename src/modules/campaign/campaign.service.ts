@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CustomersService } from '../customers/customers.service';
 import { ProductsService } from '../products/products.service';
-import { MailService } from '../mail/mail.service';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class CampaignService {
+  private readonly logger = new Logger(CampaignService.name);
+
   constructor(
     private customersService: CustomersService,
     private productService: ProductsService,
-    private mailService: MailService,
+    @InjectQueue('birthday-emails') private emailQueue: Queue,
   ) {}
 
   async runBirthdayCampaign() {
@@ -23,17 +26,20 @@ export class CampaignService {
       const diff = Math.floor(
         (birthday.getTime() - today.getTime()) / (1000 * 3600 * 24),
       );
+
       if (diff === 7) {
         const products = await this.productService.getSuggestedProducts(
           user.preferences,
         );
         const discountCode = uuid();
 
-        await this.mailService.sendBirthdayEmail(
-          user.email,
+        await this.emailQueue.add('send-birthday-email', {
+          email: user.email,
           discountCode,
           products,
-        );
+        });
+
+        this.logger.log(`📩 Enqueued birthday email for ${user.email}`);
       }
     }
   }

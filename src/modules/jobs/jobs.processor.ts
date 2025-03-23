@@ -1,14 +1,25 @@
-import { Job } from 'bullmq';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { CampaignService } from '../campaign/campaign.service';
+import { Job } from 'bullmq';
+import { Logger } from '@nestjs/common';
+import { MailService } from '../mail/mail.service';
 
-@Processor('birthday')
+@Processor('birthday-emails')
 export class JobsProcessor extends WorkerHost {
-  constructor(private readonly campaignService: CampaignService) {
+  private readonly logger = new Logger(JobsProcessor.name);
+
+  constructor(private readonly mailService: MailService) {
     super();
   }
 
-  async process(job: Job<any, any, string>): Promise<void> {
-    await this.campaignService.runBirthdayCampaign();
+  async process(job: Job<any>): Promise<void> {
+    const { email, discountCode, products } = job.data;
+
+    try {
+      await this.mailService.sendBirthdayEmail(email, discountCode, products);
+      this.logger.log(`✅ Birthday email successfully sent to ${email}`);
+    } catch (error) {
+      this.logger.error(`❌ Failed to send email to ${email}`, error.stack);
+      throw error;
+    }
   }
 }
