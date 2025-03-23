@@ -1,98 +1,194 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🌈 r-ainbow_phi
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A scalable, secure, and event-driven NestJS backend application implementing:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- 🔐 JWT-based Authentication
+- 🎂 Birthday Discount Campaign with Cron & BullMQ
+- 📦 Product Recommendations
+- 📧 Email Notifications via Nodemailer & Handlebars
+- 🧪 Testing with Jest
+- 🧼 Git Hooks (ESLint, Prettier, Type Check, CommitLint) via Husky
 
-## Description
+## 📚 Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [🧰 Tech Stack](#-tech-stack)
+- [📦 Features](#-features)
+- [🚀 Getting Started](#-getting-started)
+- [🗃️ Architecture Overview](#️-architecture-overview)
+- [📨 Birthday Campaign Flow](#-birthday-campaign-flow)
+- [🔐 Auth Flow](#-auth-flow)
+- [⚙️ Configuration](#️-configuration)
+- [✅ Git Hooks](#-git-hooks)
+- [🧪 Testing](#-testing)
+- [📦 Docker Setup](#-docker-setup)
+- [🧑‍💻 Contribution Guide](#-contribution-guide)
 
-## Project setup
+## 🧰 Tech Stack
 
-```bash
-$ yarn install
-```
+| Layer       | Stack                                      |
+| ----------- | ------------------------------------------ |
+| Framework   | [NestJS](https://nestjs.com/) (TypeScript) |
+| ORM         | TypeORM                                    |
+| DB          | PostgreSQL                                 |
+| Queue       | BullMQ + Redis                             |
+| Mail        | Nodemailer + Handlebars                    |
+| Auth        | Passport (Local + JWT)                     |
+| Scheduler   | @nestjs/schedule                           |
+| Validation  | Class-validator + Joi                      |
+| Dev Tooling | ESLint, Prettier, Husky, CommitLint        |
+| Testing     | Jest, Supertest                            |
+| Docs        | Swagger via @nestjs/swagger                |
 
-## Compile and run the project
+## 📦 Features
 
-```bash
-# development
-$ yarn run start
+- User Registration & Login (Local + JWT)
+- Secure Auth with Hashed Passwords
+- Daily Cron Job for Birthday Campaign
+- Suggested Product Recommendations
+- Queued Email Delivery with BullMQ & Redis
+- Swagger API Documentation
+- Git Hooks: Lint, Format, Test, Commit Validation
 
-# watch mode
-$ yarn run start:dev
+## 🚀 Getting Started
 
-# production mode
-$ yarn run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 1. Clone the repo
 
 ```bash
-$ yarn install -g mau
-$ mau deploy
+git clone https://github.com/mfmsajidh/r-ainbow_phi
+cd r-ainbow_phi
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 2. Install dependencies
 
-## Resources
+```bash
+yarn install
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### 3. Setup environment
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Copy `.env.example` to `.env.<environment>` and configure the variables
 
-## Support
+## 🗃️ Architecture Overview
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+src/
+├── modules/
+│   ├── auth/                # Login, Register, JWT Strategy
+│   ├── campaign/            # Birthday campaign logic
+│   ├── customers/           # Customer CRUD
+│   ├── mail/                # Email service with Handlebars
+│   ├── products/            # Product suggestion logic
+│   └── jobs/                # BullMQ Processor + Scheduler
+│   └── seeds/               # Initial Seeding Data
+├── config/                  # App, DB, BullMQ, Swagger, Email, Security config
+├── common/                  # Interfaces, constants, modules
+├── main.ts                  # App bootstrap + Swagger setup
+```
 
-## Stay in touch
+## 📨 Birthday Campaign Flow
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| Step | Process                                                    |
+| ---- | ---------------------------------------------------------- |
+| 1️⃣   | Scheduler runs daily at 1 AM (via @nestjs/schedule)        |
+| 2️⃣   | CampaignService checks users whose birthday is 7 days away |
+| 3️⃣   | A unique discount code is generated (via uuid)             |
+| 4️⃣   | Suggested products are fetched from ProductsService        |
+| 5️⃣   | Email job is queued using BullMQ                           |
+| 6️⃣   | JobsProcessor consumes the job and sends email             |
 
-## License
+## 🔐 Auth Flow
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- Users register with POST /auth/register
+- Login via POST /auth/login
+- Receive access_token (JWT)
+- Protected routes use @UseGuards(JwtAuthGuard)
+- Authenticated user info is injected into req.user
+
+## ⚙️ Configuration
+
+Config files are located under /config, and use NestJS @nestjs/config:
+
+- application.config.ts
+- bull.config.ts
+- database.config.ts
+- swagger.config.ts
+- email.config.ts
+- security.config.ts
+
+Validation schema `validation.config.ts` uses joi.
+
+## ✅ Git Hooks
+
+Git hooks are powered by husky, lint-staged, and commitlint.
+
+### Pre-commit
+
+- Runs Prettier
+- Lints staged files
+- Type checks
+- Unit tests
+
+### Pre-push
+
+- Full type check
+- Full lint
+- Full test run
+
+### Commit message validation
+
+- Enforces Conventional Commits
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+yarn test
+
+# Watch mode
+yarn test:watch
+
+# E2E tests
+yarn test:e2e
+
+# Test coverage
+yarn test:cov
+```
+
+## 🐳 Docker Setup
+
+To spin up Postgres and Redis locally:
+
+### 1. Run
+
+```bash
+docker compose up -d
+```
+
+## 🧑‍💻 Contribution Guide
+
+### Setup
+
+```bash
+yarn install
+cp .env.example .env
+docker compose up -d
+```
+
+### Create a new feature
+
+```bash
+git checkout -b feat/your-feature
+```
+
+### Commit (uses commitlint)
+
+```bash
+git commit -m "feat: add feature name"
+git push
+```
+
+> Pre-commit hooks will auto-run tests, lint, type check.
+
+## 📄 License
+
+Built with ❤️ by [@mfmsajidh](https://github.com/mfmsajidh)
