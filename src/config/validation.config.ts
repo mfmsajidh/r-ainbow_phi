@@ -32,4 +32,14 @@ export default Joi.object({
   // Bull
   BULL_HOST: Joi.string().required(),
   BULL_PORT: Joi.number().required(),
+
+  // Authentication
+  JWT_SECRET: Joi.string().required(),
+
+  // Email
+  EMAIL_USER: Joi.string().email().required(),
+  EMAIL_PASS: Joi.string().required(),
+
+  // Seeding
+  RUN_SEED: Joi.boolean().default(false),
 });

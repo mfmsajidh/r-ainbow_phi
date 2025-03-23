@@ -4,6 +4,7 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from './entities/customer.entity';
 import { Repository, UpdateResult } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CustomersService {
@@ -12,12 +13,9 @@ export class CustomersService {
     private customersRepository: Repository<Customer>,
   ) {}
 
-  create(createCustomerDto: CreateCustomerDto): Promise<Customer> {
-    const customer = new Customer();
-    customer.firstName = createCustomerDto.firstName;
-    customer.lastName = createCustomerDto.lastName;
-    customer.password = createCustomerDto.password;
-
+  async create(createCustomerDto: CreateCustomerDto): Promise<Customer> {
+    const customer = this.customersRepository.create(createCustomerDto);
+    customer.password = await bcrypt.hash(createCustomerDto.password, 10);
     return this.customersRepository.save(customer);
   }
 
@@ -25,8 +23,8 @@ export class CustomersService {
     return this.customersRepository.find();
   }
 
-  findOne(id: string): Promise<Customer | null> {
-    return this.customersRepository.findOneBy({ id });
+  findOne(email: string): Promise<Customer | null> {
+    return this.customersRepository.findOneBy({ email });
   }
 
   async update(

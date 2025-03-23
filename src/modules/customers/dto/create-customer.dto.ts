@@ -1,6 +1,15 @@
-import { IsNotEmpty, IsStrongPassword } from 'class-validator';
+import { IsDate, IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
 
 export class CreateCustomerDto {
+  /**
+   *  Customer's email
+   *
+   *  @example mfmsajidh@yahoo.com
+   */
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
   /**
    * Customer's first name
    *
@@ -16,6 +25,22 @@ export class CreateCustomerDto {
    */
   @IsNotEmpty()
   lastName: string;
+
+  /**
+   * Customer's birthday
+   *
+   * @example 08/01/1999
+   */
+  @IsDate()
+  @IsNotEmpty()
+  birthday: Date;
+
+  /**
+   * Customer's preferences
+   *
+   * @example books, electronics
+   */
+  preferences: string[];
 
   /**
    * Customer's password
