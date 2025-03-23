@@ -5,22 +5,24 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { CustomersService } from '../customers/customers.service';
 import { ProductsService } from '../products/products.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('campaign')
 export class CampaignController {
   constructor(
-    private customersService: CustomersService,
-    private productService: ProductsService,
+    private readonly customersService: CustomersService,
+    private readonly productService: ProductsService,
   ) {}
 
   /**
    * Get in-app birthday campaign content
    * @param req
    */
-  @UseGuards(AuthGuard('local'))
   @Get('in-app')
   async getBirthdayContent(@Request() req) {
     const customer = await this.customersService.findOne(req.user.email);
