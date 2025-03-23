@@ -13,7 +13,7 @@ export class LoginDto {
   /**
    * The user password.
    *
-   * @example password
+   * @example Password123!
    */
   @IsNotEmpty()
   password: string;
