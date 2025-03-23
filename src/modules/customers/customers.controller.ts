@@ -1,54 +1,65 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
-  Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
-import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Customer } from './entities/customer.entity';
 import { UpdateResult } from 'typeorm';
 import { CacheTTL } from '@nestjs/cache-manager';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('customers')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
   /**
-   * Create a customer
-   *
-   * @param createCustomerDto
+   * Get details of the currently authenticated customer.
    */
-  @Post()
-  create(@Body() createCustomerDto: CreateCustomerDto): Promise<Customer> {
-    return this.customersService.create(createCustomerDto);
+  @Get('me')
+  @CacheTTL(30000) // Cache response for 30 seconds
+  @ApiResponse({
+    status: 200,
+    description: 'The customer details',
+    type: Customer,
+  })
+  getProfile(@Request() req): Promise<Customer | null> {
+    return this.customersService.findOne(req.user.email);
   }
 
-  @Get()
-  @CacheTTL(30000) // 30 seconds
-  findAll(): Promise<Customer[]> {
-    return this.customersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Customer | null> {
-    return this.customersService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: number,
+  /**
+   * Update the currently authenticated customer's details.
+   */
+  @Patch('me')
+  @ApiResponse({
+    status: 200,
+    description: 'The result of the update operation',
+    type: UpdateResult,
+  })
+  updateProfile(
+    @Request() req,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ): Promise<UpdateResult> {
-    return this.customersService.update(id, updateCustomerDto);
+    return this.customersService.update(req.user.id, updateCustomerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.customersService.remove(id);
+  /**
+   * Delete the currently authenticated customer's account.
+   */
+  @Delete('me')
+  @ApiResponse({ status: 200, description: 'Customer account deleted' })
+  removeProfile(@Request() req): Promise<void> {
+    return this.customersService.remove(req.user.id);
   }
 }
