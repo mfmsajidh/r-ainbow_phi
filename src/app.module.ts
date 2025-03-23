@@ -62,6 +62,7 @@ const ENV_PATHS = [
       (env: NodeJS.ProcessEnv) => env['RUN_SEED'] === 'true',
     ),
 
+    // TODO: Get config from environment variable
     ThrottlerModule.forRoot({
       throttlers: [
         {
