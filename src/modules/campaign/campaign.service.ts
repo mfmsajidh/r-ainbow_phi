@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CustomersService } from '../customers/customers.service';
 import { ProductsService } from '../products/products.service';
 import { InjectQueue } from '@nestjs/bullmq';
@@ -15,6 +15,26 @@ export class CampaignService {
     private productService: ProductsService,
     @InjectQueue('birthday-emails') private emailQueue: Queue,
   ) {}
+
+  async getBirthdayCampaignContent(email: string) {
+    const customer = await this.customersService.findOne(email);
+    if (!customer) {
+      throw new NotFoundException('Customer not found');
+    }
+
+    const today = new Date();
+    const birthdayThisYear = setYear(new Date(customer.birthday), today.getFullYear());
+    const diff = differenceInCalendarDays(birthdayThisYear, today);
+
+    if (diff >= 0 && diff <= 7) {
+      const products = await this.productService.getSuggestedProducts(
+        customer.preferences,
+      );
+      return { products };
+    }
+
+    return { message: 'No campaign currently active.' };
+  }
 
   async runBirthdayCampaign() {
     const users = await this.customersService.findAll();
