@@ -1,7 +1,15 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { CampaignService } from './campaign.service';
+import { Request } from 'express';
+
+interface AuthenticatedRequest extends Request {
+  user: {
+    email: string;
+    id: number;
+  };
+}
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -14,7 +22,7 @@ export class CampaignController {
    * @param req
    */
   @Get('in-app')
-  async getBirthdayContent(@Request() req) {
+  async getBirthdayContent(@Req() req: AuthenticatedRequest) {
     return this.campaignService.getBirthdayCampaignContent(req.user.email);
   }
 }
