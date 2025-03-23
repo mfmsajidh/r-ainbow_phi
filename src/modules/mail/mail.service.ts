@@ -3,10 +3,11 @@ import * as nodemailer from 'nodemailer';
 import * as handlebars from 'handlebars';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
+import type { Transporter } from 'nodemailer';
 
 @Injectable()
 export class MailService {
-  private transporter;
+  private transporter: Transporter;
 
   constructor(private configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
@@ -22,7 +23,7 @@ export class MailService {
     email: string,
     discountCode: string,
     products: any[],
-  ) {
+  ): Promise<void> {
     const source = fs.readFileSync(
       './src/modules/mail/templates/birthday.hbs',
       'utf8',
