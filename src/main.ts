@@ -16,7 +16,12 @@ import {
 import * as compression from 'compression';
 import helmet from 'helmet';
 
-declare const module: any;
+declare const module: NodeJS.Module & {
+  hot?: {
+    accept(callback?: () => void): void;
+    dispose(callback: () => void): void;
+  };
+};
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -24,12 +29,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(helmet());
-
-  //TODO Offload compression from the application server and give to NGINX
+  // TODO: Offload compression to NGINX in production environments
   app.use(compression());
 
   const configService = app.get(ConfigService);
-
   const logLevels = configService.get<LogLevel[]>('application.logLevels') || [
     'log',
     'warn',
@@ -65,14 +68,15 @@ async function bootstrap() {
     raw: configService.get<[]>('swagger.raw'),
   };
 
-  const config = new DocumentBuilder()
+  const swaggerConfig = new DocumentBuilder()
     .setTitle(configService.get<string>('swagger.title') as string)
     .setDescription(configService.get<string>('swagger.description') as string)
     .setVersion(configService.get<string>('swagger.version') as string)
     .addBearerAuth()
     .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup(
     `${globalPrefix}/${configService.get<string>('swagger.url') as string}`,
     app,
@@ -83,13 +87,17 @@ async function bootstrap() {
   app.enableCors();
 
   await app.listen(configService.get<number>('application.port') as number);
-
   logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
 
   if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
+    module.hot.accept(() => {});
+    module.hot.dispose(() => {
+      void app.close();
+    });
   }
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Bootstrap failed', error);
+  process.exit(1);
+});
