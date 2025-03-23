@@ -51,15 +51,15 @@ This project implements a scalable and secure solution to run a Birthday Discoun
 
 ## 🔸 Key Architectural Patterns:
 
--     **Modular (Feature-based):**
+- **Modular (Feature-based):**
   Organised into Auth, Campaign, Customers, Products, Jobs, Seeds, and Mail modules.
--     **Event-Driven & Asynchronous Processing:**
+- **Event-Driven & Asynchronous Processing:**
   Leveraging BullMQ for reliable job scheduling and execution.
--     **Service-oriented Design:**
+- **Service-oriented Design:**
   Clearly separated services for email sending, customer management, and product recommendations.
--     **Security by Design:**
+- **Security by Design:**
   JWT authentication with Passport.js, validation modules, and security best practices.
--     **Configuration Management:**
+- **Configuration Management:**
   Centralized via configuration modules (src/config), easing environment management.
 
 ## 🛠️ Detailed Module and Feature Breakdown
