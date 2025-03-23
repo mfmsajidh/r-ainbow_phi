@@ -23,10 +23,10 @@ export class SeedService implements OnModuleInit {
   }
 
   private async seedCustomers(count: number) {
-    for (let i = 0; i < count; i++) {
-      const randomDaysFromToday = faker.number.int({ min: 0, max: 28 });
-      let birthday = addDays(new Date(), randomDaysFromToday);
+    const today = new Date();
 
+    for (let i = 0; i < count; i++) {
+      let birthday = addDays(today, 7);
       const age = faker.number.int({ min: 18, max: 60 });
       birthday = subYears(birthday, age);
 
@@ -42,7 +42,7 @@ export class SeedService implements OnModuleInit {
         ),
       });
     }
-    this.logger.log(`👥 Created ${count} customers with realistic birthdays.`);
+    this.logger.log(`👥 Created ${count} customers with birthdays exactly 7 days from today.`);
   }
 
   private async seedProducts(count: number) {

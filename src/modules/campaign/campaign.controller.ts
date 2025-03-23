@@ -9,6 +9,7 @@ import { CustomersService } from '../customers/customers.service';
 import { ProductsService } from '../products/products.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { differenceInCalendarDays, setYear } from 'date-fns';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -20,7 +21,7 @@ export class CampaignController {
   ) {}
 
   /**
-   * Get in-app birthday campaign content
+   * Get personalised birthday campaign content
    * @param req
    */
   @Get('in-app')
@@ -32,14 +33,10 @@ export class CampaignController {
     }
 
     const today = new Date();
-    const bday = new Date(customer.birthday);
-    bday.setFullYear(today.getFullYear());
+    const birthdayThisYear = setYear(new Date(customer.birthday), today.getFullYear());
+    const diff = Math.abs(differenceInCalendarDays(birthdayThisYear, today));
 
-    const diff = Math.abs(
-      Math.floor((bday.getTime() - today.getTime()) / (1000 * 3600 * 24)),
-    );
-
-    if (diff <= 3) {
+    if (diff === 7) {
       const products = await this.productService.getSuggestedProducts(
         customer.preferences,
       );

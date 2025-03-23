@@ -4,6 +4,7 @@ import { ProductsService } from '../products/products.service';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { v4 as uuid } from 'uuid';
+import { differenceInCalendarDays, setYear } from 'date-fns';
 
 @Injectable()
 export class CampaignService {
@@ -20,12 +21,9 @@ export class CampaignService {
     const today = new Date();
 
     for (const user of users) {
-      const birthday = new Date(user.birthday);
-      birthday.setFullYear(today.getFullYear());
+      const birthdayThisYear = setYear(new Date(user.birthday), today.getFullYear());
 
-      const diff = Math.floor(
-        (birthday.getTime() - today.getTime()) / (1000 * 3600 * 24),
-      );
+      const diff = differenceInCalendarDays(birthdayThisYear, today);
 
       if (diff === 7) {
         const products = await this.productService.getSuggestedProducts(
