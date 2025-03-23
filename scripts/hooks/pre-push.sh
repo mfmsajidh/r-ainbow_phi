@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "🚀 Verifying build & tests before push..."
 yarn build
-yarn test
+yarn test --passWithNoTests
