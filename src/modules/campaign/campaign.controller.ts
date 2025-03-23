@@ -2,14 +2,7 @@ import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { CampaignService } from './campaign.service';
-import { Request } from 'express';
-
-interface AuthenticatedRequest extends Request {
-  user: {
-    email: string;
-    id: number;
-  };
-}
+import { AuthenticatedRequest } from '../../common/interfaces/authenticated-request.interface';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
