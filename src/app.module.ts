@@ -7,7 +7,7 @@ import swaggerConfig from './config/swagger.config';
 import applicationConfig from './config/application.config';
 import validationSchema from './config/validation.config';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { BullModule } from '@nestjs/bullmq';
 import bullConfig from './config/bull.config';
 import { AuthModule } from './modules/auth/auth.module';
@@ -18,6 +18,7 @@ import { JobsModule } from './modules/jobs/jobs.module';
 import { SeedModule } from './modules/seeds/seed.module';
 import emailConfig from './config/email.config';
 import securityConfig from './config/security.config';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 const ENV_PATHS = [
   '.env.development.local',
@@ -61,6 +62,15 @@ const ENV_PATHS = [
       (env: NodeJS.ProcessEnv) => env['RUN_SEED'] === 'true',
     ),
 
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
+    }),
+
     CustomersModule,
     AuthModule,
     ProductsModule,
@@ -76,6 +86,10 @@ const ENV_PATHS = [
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

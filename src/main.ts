@@ -73,6 +73,12 @@ async function bootstrap() {
 
   app.enableCors();
 
+  /**
+   * TODO: Configure and setup CSRF properly
+   */
+  // app.use(cookieParser());
+  // app.use(new CsrfMiddleware().use);
+
   await app.listen(configService.get<number>('application.port') as number);
   logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
 
