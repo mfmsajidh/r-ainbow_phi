@@ -23,16 +23,11 @@ export class CampaignService {
     }
 
     const today = new Date();
-    const birthdayThisYear = setYear(
-      new Date(customer.birthday),
-      today.getFullYear(),
-    );
+    const birthdayThisYear = setYear(new Date(customer.birthday), today.getFullYear());
     const diff = differenceInCalendarDays(birthdayThisYear, today);
 
     if (diff >= 0 && diff <= 7) {
-      const products = await this.productService.getSuggestedProducts(
-        customer.preferences,
-      );
+      const products = await this.productService.getSuggestedProducts(customer.preferences);
       return { products };
     }
 
@@ -44,17 +39,12 @@ export class CampaignService {
     const today = new Date();
 
     for (const user of users) {
-      const birthdayThisYear = setYear(
-        new Date(user.birthday),
-        today.getFullYear(),
-      );
+      const birthdayThisYear = setYear(new Date(user.birthday), today.getFullYear());
 
       const diff = differenceInCalendarDays(birthdayThisYear, today);
 
       if (diff === 7) {
-        const products = await this.productService.getSuggestedProducts(
-          user.preferences,
-        );
+        const products = await this.productService.getSuggestedProducts(user.preferences);
         const discountCode = uuid();
 
         await this.emailQueue.add('send-birthday-email', {

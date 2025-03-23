@@ -12,10 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<Omit<Customer, 'password'>> {
+  async validateUser(email: string, password: string): Promise<Omit<Customer, 'password'>> {
     const user = await this.customersService.findOne(email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
 

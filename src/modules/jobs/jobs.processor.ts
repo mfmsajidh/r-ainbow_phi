@@ -22,9 +22,7 @@ export class JobsProcessor extends WorkerHost {
       if (error instanceof Error) {
         this.logger.error(`❌ Failed to send email to ${email}`, error.stack);
       } else {
-        this.logger.error(
-          `❌ Failed to send email to ${email}: ${String(error)}`,
-        );
+        this.logger.error(`❌ Failed to send email to ${email}: ${String(error)}`);
       }
       throw error;
     }

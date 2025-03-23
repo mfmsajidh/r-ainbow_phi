@@ -1,18 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  DocumentBuilder,
-  SwaggerCustomOptions,
-  SwaggerModule,
-} from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import {
-  ConsoleLogger,
-  Logger,
-  LogLevel,
-  ValidationPipe,
-  VersioningType,
-} from '@nestjs/common';
+import { ConsoleLogger, Logger, LogLevel, ValidationPipe, VersioningType } from '@nestjs/common';
 import * as compression from 'compression';
 import helmet from 'helmet';
 
@@ -54,9 +44,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      disableErrorMessages: !configService.get<boolean>(
-        'application.validationError',
-      ),
+      disableErrorMessages: !configService.get<boolean>('application.validationError'),
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
@@ -75,8 +63,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  const documentFactory = () =>
-    SwaggerModule.createDocument(app, swaggerConfig);
+  const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup(
     `${globalPrefix}/${configService.get<string>('swagger.url') as string}`,
     app,
