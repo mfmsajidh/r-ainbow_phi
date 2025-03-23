@@ -12,18 +12,22 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string) {
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<Omit<Customer, 'password'>> {
     const user = await this.customersService.findOne(email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) throw new UnauthorizedException('Invalid credentials');
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPass } = user;
     return userWithoutPass;
   }
 
-  async login(user: any) {
+  login(user: Omit<Customer, 'password'>) {
     const payload = {
       sub: user.id,
       email: user.email,
@@ -38,6 +42,6 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto): Promise<Customer> {
-    return this.customersService.create(registerDto);
+    return await this.customersService.create(registerDto);
   }
 }
