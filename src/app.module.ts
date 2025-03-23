@@ -17,6 +17,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { SeedModule } from './modules/seeds/seed.module';
 import emailConfig from './config/email.config';
+import securityConfig from './config/security.config';
 
 const ENV_PATHS = [
   '.env.development.local',
@@ -30,7 +31,7 @@ const ENV_PATHS = [
   imports: [
     ConfigModule.forRoot({
       envFilePath: ENV_PATHS,
-      load: [applicationConfig, swaggerConfig, bullConfig, emailConfig],
+      load: [applicationConfig, swaggerConfig, bullConfig, emailConfig, securityConfig],
       validationSchema,
       isGlobal: true,
       cache: true,

@@ -40,7 +40,7 @@ export class CreateCustomerDto {
    *
    * @example books, electronics
    */
-  preferences: string[];
+  preferences?: string[];
 
   /**
    * Customer's password

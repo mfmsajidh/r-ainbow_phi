@@ -1,14 +1,14 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { CreateCustomerDto } from '../../customers/dto/create-customer.dto';
+import { IsNotEmpty, IsStrongPassword } from 'class-validator';
 
-export class RegisterDto {
-  @IsEmail()
-  email: string;
-
-  @MinLength(6)
-  password: string;
-
+export class RegisterDto extends PartialType(CreateCustomerDto) {
+  /**
+   * Customer's password
+   *
+   * @example string2A!
+   */
   @IsNotEmpty()
-  birthday: string; // ISO date string
-
-  preferences?: string[];
+  @IsStrongPassword()
+  password: string;
 }

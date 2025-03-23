@@ -33,8 +33,9 @@ export default Joi.object({
   BULL_HOST: Joi.string().required(),
   BULL_PORT: Joi.number().required(),
 
-  // Authentication
+  // Security
   JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRY: Joi.string().default('1d'),
 
   // Email
   EMAIL_USER: Joi.string().email().required(),

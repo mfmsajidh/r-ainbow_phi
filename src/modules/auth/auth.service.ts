@@ -1,10 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CustomersService } from '../customers/customers.service';
 import * as bcrypt from 'bcrypt';
+import { RegisterDto } from './dto/register.dto';
+import { Customer } from '../customers/entities/customer.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private customersService: CustomersService) {}
+  constructor(
+    private readonly customersService: CustomersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.customersService.findOne(email);
@@ -18,14 +24,20 @@ export class AuthService {
   }
 
   async login(user: any) {
-    // later you can add JWT here
+    const payload = {
+      sub: user.id,
+      email: user.email,
+    };
+
+    const token = this.jwtService.sign(payload);
+
     return {
-      message: 'Logged in successfully',
+      access_token: token,
       user,
     };
   }
 
-  async register(data: any) {
-    return this.customersService.create(data);
+  async register(registerDto: RegisterDto): Promise<Customer> {
+    return this.customersService.create(registerDto);
   }
 }
