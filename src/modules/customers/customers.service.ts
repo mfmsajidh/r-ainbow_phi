@@ -14,7 +14,9 @@ export class CustomersService {
     private customersRepository: Repository<Customer>,
   ) {}
 
-  async create(createCustomerDto: CreateCustomerDto | RegisterDto): Promise<Customer> {
+  async create(
+    createCustomerDto: CreateCustomerDto | RegisterDto,
+  ): Promise<Customer> {
     const customer = this.customersRepository.create(createCustomerDto);
     customer.password = await bcrypt.hash(createCustomerDto.password, 10);
     return this.customersRepository.save(customer);

@@ -6,6 +6,6 @@ import { CustomersModule } from '../customers/customers.module';
 @Module({
   imports: [CustomersModule, ProductsModule],
   providers: [SeedService],
-  exports: [SeedService]
+  exports: [SeedService],
 })
 export class SeedModule {}

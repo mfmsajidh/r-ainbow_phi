@@ -18,9 +18,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         secret: configService.get<string>('security.secret'),
         signOptions: {
           expiresIn: configService.get<string>('security.expiry'),
-        }
-      })
-    })
+        },
+      }),
+    }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],

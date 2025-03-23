@@ -20,12 +20,20 @@ export class CampaignService {
       const birthday = new Date(user.birthday);
       birthday.setFullYear(today.getFullYear());
 
-      const diff = Math.floor((birthday.getTime() - today.getTime()) / (1000 * 3600 * 24));
+      const diff = Math.floor(
+        (birthday.getTime() - today.getTime()) / (1000 * 3600 * 24),
+      );
       if (diff === 7) {
-        const products = await this.productService.getSuggestedProducts(user.preferences);
+        const products = await this.productService.getSuggestedProducts(
+          user.preferences,
+        );
         const discountCode = uuid();
 
-        await this.mailService.sendBirthdayEmail(user.email, discountCode, products);
+        await this.mailService.sendBirthdayEmail(
+          user.email,
+          discountCode,
+          products,
+        );
       }
     }
   }

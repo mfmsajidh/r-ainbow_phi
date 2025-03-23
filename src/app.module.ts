@@ -31,7 +31,13 @@ const ENV_PATHS = [
   imports: [
     ConfigModule.forRoot({
       envFilePath: ENV_PATHS,
-      load: [applicationConfig, swaggerConfig, bullConfig, emailConfig, securityConfig],
+      load: [
+        applicationConfig,
+        swaggerConfig,
+        bullConfig,
+        emailConfig,
+        securityConfig,
+      ],
       validationSchema,
       isGlobal: true,
       cache: true,

@@ -18,7 +18,11 @@ export class MailService {
     });
   }
 
-  async sendBirthdayEmail(email: string, discountCode: string, products: any[]) {
+  async sendBirthdayEmail(
+    email: string,
+    discountCode: string,
+    products: any[],
+  ) {
     const source = fs.readFileSync('./src/mail/templates/birthday.hbs', 'utf8');
     const template = handlebars.compile(source);
     const html = template({ discountCode, products });

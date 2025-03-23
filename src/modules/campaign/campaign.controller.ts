@@ -1,4 +1,10 @@
-import { Controller, Get, NotFoundException, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomersService } from '../customers/customers.service';
 import { ProductsService } from '../products/products.service';
@@ -32,7 +38,9 @@ export class CampaignController {
     );
 
     if (diff <= 3) {
-      const products = await this.productService.getSuggestedProducts(customer.preferences);
+      const products = await this.productService.getSuggestedProducts(
+        customer.preferences,
+      );
       return { products };
     }
 

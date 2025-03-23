@@ -15,8 +15,8 @@ export class SeedService implements OnModuleInit {
     this.logger.log('🌱 Seeding database...');
 
     await this.customersService.create({
-      firstName: "Saj",
-      lastName: "Sah",
+      firstName: 'Saj',
+      lastName: 'Sah',
       email: 'test@example.com',
       password: 'password',
       birthday: new Date(new Date().setDate(new Date().getDate() + 7)),
@@ -35,5 +35,4 @@ export class SeedService implements OnModuleInit {
 
     this.logger.log('✅ Seeding complete!');
   }
-
 }
