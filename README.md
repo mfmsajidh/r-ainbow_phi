@@ -14,10 +14,10 @@ A scalable, secure, and event-driven NestJS backend application implementing:
 - [🧰 Tech Stack](#-tech-stack)
 - [📦 Features](#-features)
 - [🚀 Getting Started](#-getting-started)
-- [🗃️ Architecture Overview](#️-architecture-overview)
+- [🗃️ Architecture Overview](#-architecture-overview)
 - [📨 Birthday Campaign Flow](#-birthday-campaign-flow)
 - [🔐 Auth Flow](#-auth-flow)
-- [⚙️ Configuration](#️-configuration)
+- [⚙️ Configuration](#-configuration)
 - [✅ Git Hooks](#-git-hooks)
 - [🧪 Testing](#-testing)
 - [📦 Docker Setup](#-docker-setup)
@@ -185,6 +185,12 @@ git checkout -b feat/your-feature
 ```bash
 git commit -m "feat: add feature name"
 git push
+```
+
+or use the below to get a guided CLI to compose commit messages
+
+```bash
+yarn commit
 ```
 
 > Pre-commit hooks will auto-run tests, lint, type check.
